@@ -1,35 +1,33 @@
-import java.lang.Exception
-import javax.print.attribute.IntegerSyntax
-
 fun main() {
-    print(maxProfit(intArrayOf(7, 6, 4, 3, 1)))
+    //print(maxProfit(intArrayOf(1, 2, 4, 2, 5, 7, 2, 4, 9, 0)))
+    print(maxProfit(intArrayOf(7, 5, 4, 3, 2, 1)))
 }
 
 fun maxProfit(prices: IntArray): Int {
-    val pricesTemp = prices.toMutableList()
-    var tempList = mutableListOf<Int>()
-    var min = -1
-    while (tempList.size < 2) {
-        tempList.clear()
-        if (min != -1) {
-            pricesTemp.remove(min)
-        }
-        for (i in pricesTemp.indices) {
-            if (tempList.contains(pricesTemp[i])) {
-                tempList.removeAt(tempList.indexOf(pricesTemp[i]))
-            }
-            tempList.add(pricesTemp[i])
+    var buy = Integer.MAX_VALUE
+    var sell = 0
+    val map = HashMap<Int, Int>()
+    for (i in 0 until prices.size) {
+        if (prices[i] < buy) {
+            buy = prices[i]
+            sell = 0
         }
 
-        try {
-            min = (tempList.min() ?: 0)
-        } catch (e: Exception) {
-            return 0
+        if (buy >= 0 && prices[i] > sell) {
+            sell = prices[i]
+            map[buy] = sell
         }
-
-        if (min >= 0)
-            tempList = tempList.subList(tempList.indexOf(min), tempList.size)
-        return 0
     }
-    return (tempList.max() ?: 0) - min
+
+    val result: Int
+
+
+    var difference = Integer.MIN_VALUE
+    map.forEach {
+        if (it.value - it.key > difference)
+            difference = it.value - it.key
+    }
+    result = difference
+
+    return result
 }
